@@ -220,24 +220,24 @@ int ParticleToInsertMultisphere::insert()
 
     if(modify->n_fixes_style("multisphere") != 1) {
         printf("Number of fix multisphere used: %d\n", modify->n_fixes_style("multisphere"));
-        error->one(FLERR,"Multi-sphere particle inserted: You have to use exactly one fix multisphere.");
-    }
+        //error->one(FLERR,"Multi-sphere particle inserted: You have to use exactly one fix multisphere.");
+    } else {
 
-    FixMultisphere *fix_multisphere = static_cast<FixMultisphere*>(modify->find_fix_style("multisphere",0));
+        FixMultisphere *fix_multisphere = static_cast<FixMultisphere*>(modify->find_fix_style("multisphere",0));
 
-    fix_multisphere->data().add_body(nparticles,xcm_ins,xcm_to_xbound,r_bound_ins, v_ins, omega_ins, mass_ins,
-                                density_ins,atom_type,type_ms,inertia,ex_space,ey_space,ez_space,displace,fflag,tflag);
+        fix_multisphere->data().add_body(nparticles,xcm_ins,xcm_to_xbound,r_bound_ins, v_ins, omega_ins, mass_ins,
+                                    density_ins,atom_type,type_ms,inertia,ex_space,ey_space,ez_space,displace,fflag,tflag);
 
-    // set displace correctly, set body to -2
-    
-    int i = 0;
-    for(int isphere = nlocal-nparticles; isphere < nlocal; isphere++)
-    {
+        // set displace correctly, set body to -2
         
-        fix_multisphere->set_body_displace(isphere,displace[i],-2,volumeweight[i]);
-        i++;
+        int i = 0;
+        for(int isphere = nlocal-nparticles; isphere < nlocal; isphere++)
+        {
+            
+            fix_multisphere->set_body_displace(isphere,displace[i],-2,volumeweight[i]);
+            i++;
+        }
     }
-
     return inserted;
 }
 

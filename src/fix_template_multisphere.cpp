@@ -650,8 +650,8 @@ void FixTemplateMultisphere::randomize_ptilist(int n_random,int distribution_gro
 
 void FixTemplateMultisphere::finalize_insertion()
 {
-    if(modify->n_fixes_style("multisphere") != 1)
-        error->fix_error(FLERR,this,"Multi-sphere particle inserted: You have to use exactly one fix multisphere");
-
-    static_cast<FixMultisphere*>(modify->find_fix_style("multisphere",0))->add_body_finalize();
+    if(modify->n_fixes_style("multisphere") == 1) {
+        //error->fix_error(FLERR,this,"Multi-sphere particle inserted: You have to use exactly one fix multisphere");
+        static_cast<FixMultisphere*>(modify->find_fix_style("multisphere",0))->add_body_finalize();
+    }
 }
